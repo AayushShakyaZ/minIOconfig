@@ -43,33 +43,15 @@ public class MinioService {
         }
     }
 
-    public String getUrl(String bucketName, String objectName) throws IOException, NoSuchAlgorithmException, InvalidKeyException, MinioException {
-        Map<String, String> reqParams = new HashMap<>();
-        reqParams.put("response-content-type", "application/json");
+     public String getUrl(String objectName) throws IOException, NoSuchAlgorithmException, InvalidKeyException, MinioException {
+
         String url = minioClient.getPresignedObjectUrl(
                 GetPresignedObjectUrlArgs.builder()
                         .method(Method.GET)
                         .bucket(bucketName)
                         .object(objectName)
-                        .expiry(2, TimeUnit.HOURS)
-                        .extraQueryParams(reqParams)
                         .build());
-        logger.info("Calling url of NCHL logo");
-        return url;
-    }
-
-    public String getBankLogoUrl(String bucketName, String objectName, String bankId) throws IOException, NoSuchAlgorithmException, InvalidKeyException, MinioException {
-        Map<String, String> reqParams = new HashMap<>();
-        String bankLogoPath = objectName+"/"+bankId+".png";
-        String url = minioClient.getPresignedObjectUrl(
-                GetPresignedObjectUrlArgs.builder()
-                        .method(Method.GET)
-                        .bucket(bucketName)
-                        .object(bankLogoPath)
-                        .expiry(2, TimeUnit.HOURS)
-                        .extraQueryParams(reqParams)
-                        .build());
-        logger.info("Calling url of logo based on bankID");
+        logger.info("Calling minio logo folder for fetching respective logos {}"+url);
         return url;
     }
 
